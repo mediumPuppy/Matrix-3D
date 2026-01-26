@@ -191,6 +191,11 @@ Clone the repo and create the environment:
 git clone --recursive https://github.com/mediumPuppy/Matrix-3D.git
 cd Matrix-3D
 
+# install conda
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+chmod +x Miniconda3-latest-Linux-x86_64.sh
+./Miniconda3-latest-Linux-x86_64.sh
+
 # Create a new conda environment
 conda create -n matrix3d python=3.10
 conda activate matrix3d
