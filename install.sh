@@ -1,28 +1,33 @@
-echo "�~\~E Installing Submodules..."
+#!/bin/bash
+
+echo "�� Installing Submodules..."
 cd ./submodules/nvdiffrast/
 pip install . --no-build-isolation
 
 cd ../simple-knn/
 python setup.py install
+cd ../../
 
-cd ../..
+# Install diff-gaussian-rasterization
 pip install git+https://github.com/rmurai0610/diff-gaussian-rasterization-w-pose.git --no-build-isolation
-git clone https://github.com/esw0116/ODGS.git
+
+# Install ODGS
+echo "�� Cloning and installing ODGS..."
+git clone --recursive https://github.com/esw0116/ODGS.git
 cd ODGS
-pip install submodules/odgs-gaussian-rasterization --no-build-isolation
-
-cd ../..
-cd code
-echo "�~\~E Installing DiffSynth-Studio..."
-cd DiffSynth-Studio/
-pip install -e .
-
+pip install ./submodules/odgs-gaussian-rasterization --no-build-isolation
 cd ..
-echo "�~\~E Installing Python dependencies..."
+
+echo "�� Installing DiffSynth-Studio..."
+cd code/DiffSynth-Studio/     # Fixed path
+pip install -e .
+cd ../..
+
+echo "�� Installing Python dependencies..."
 pip install plyfile decord ffmpeg trimesh pyrender xfuser diffusers open3d py360convert
 pip install "git+https://github.com/facebookresearch/pytorch3d.git@v0.7.7" --no-build-isolation
 pip install peft easydict torchsde open-clip-torch==2.7.0 fairscale natsort
-pip install realesrgan #Version >3.7 and <3.9
+pip install realesrgan
 pip install flash-attn==2.7.4.post1 --no-build-isolation
 pip install git+https://github.com/EasternJournalist/utils3d.git#egg=utils3d --no-build-isolation
 pip install xformers==0.0.31 --no-build-isolation
@@ -44,8 +49,7 @@ pip install open_clip_torch
 pip install SwissArmyTransformer==0.4.12
 pip install wandb==0.21.1
 pip install -e git+https://github.com/CompVis/taming-transformers.git@master#egg=taming-transformers
-pip uninstall basicsr
+pip uninstall -y basicsr
 pip install openai-clip
 
-
-echo "all dependencies installed"
+echo "✅ Installation script completed!"
