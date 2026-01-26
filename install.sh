@@ -8,7 +8,7 @@ python setup.py install
 cd ../..
 pip install git+https://github.com/rmurai0610/diff-gaussian-rasterization-w-pose.git --no-build-isolation
 git clone https://github.com/esw0116/ODGS.git
-cd ../ODGS
+cd ODGS
 pip install submodules/odgs-gaussian-rasterization --no-build-isolation
 
 cd ../..
