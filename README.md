@@ -187,16 +187,23 @@ Currently tested on Linux system with NVIDIA GPU.
 Clone the repo and create the environment:
 
 ```bash
-# Clone the repository 
-git clone --recursive https://github.com/mediumPuppy/Matrix-3D.git
-cd Matrix-3D
-
 # install conda
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod +x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
 
-# Create a new conda environment
+# download cuda stuff
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda-repo-ubuntu2204-12-6-local_12.6.0-550.54.15-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu2204-12-6-local_12.6.0-550.54.15-1_amd64.deb
+sudo cp /var/cuda-repo-ubuntu2204-12-6-local/cuda-*-keyring.gpg /usr/share/keyrings/
+sudo apt-get update
+sudo apt-get install cuda-toolkit-12-6
+
+# Clone repo and create a new conda environment
+git clone --recursive https://github.com/mediumPuppy/Matrix-3D.git
+cd Matrix-3D
 conda create -n matrix3d python=3.10
 conda activate matrix3d
 
