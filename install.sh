@@ -20,7 +20,9 @@ echo "[2/6] Installing diff-gaussian-rasterization..."
 pip install git+https://github.com/rmurai0610/diff-gaussian-rasterization-w-pose.git --no-build-isolation
 
 echo "[3/6] Cloning and installing ODGS..."
-git clone --recursive https://github.com/esw0116/ODGS.git
+if [ ! -d "ODGS" ]; then
+    git clone --recursive https://github.com/esw0116/ODGS.git
+fi
 cd ODGS
 pip install ./submodules/odgs-gaussian-rasterization --no-build-isolation
 cd ..
@@ -31,6 +33,8 @@ pip install -e .
 cd ../..
 
 echo "[5/6] Installing Python dependencies..."
+# Fix for RunPod: blinker is pre-installed via distutils and blocks pip uninstall
+pip install --ignore-installed blinker
 pip install plyfile decord ffmpeg trimesh pyrender xfuser diffusers open3d py360convert
 pip install "git+https://github.com/facebookresearch/pytorch3d.git@v0.7.8" --no-build-isolation
 pip install peft easydict torchsde open-clip-torch==2.7.0 fairscale natsort
