@@ -12,7 +12,9 @@ def build_pano_gen_model(lora_path=None, device="cuda"):
         lora_path = hf_hub_download(repo_id="LeoXie/WorldGen", filename=f"models--WorldGen-Flux-Lora/worldgen_text2scene.safetensors")
     pipe = FluxPipeline.from_pretrained("black-forest-labs/FLUX.1-dev", torch_dtype=torch.bfloat16, device=device)
     print(f"Loading LoRA weights from: {lora_path}")
-    pipe.load_lora_weights(lora_path)
+    lora_dir = os.path.dirname(lora_path)
+    lora_filename = os.path.basename(lora_path)
+    pipe.load_lora_weights(lora_dir, weight_name=lora_filename)
     pipe.enable_model_cpu_offload() 
     pipe.enable_vae_tiling()
     return pipe
@@ -22,7 +24,9 @@ def build_pano_fill_model(lora_path=None, device="cuda:0"):
         lora_path = hf_hub_download(repo_id="LeoXie/WorldGen", filename=f"models--WorldGen-Flux-Lora/worldgen_img2scene.safetensors")
     pipe = FluxFillPipeline.from_pretrained("black-forest-labs/FLUX.1-Fill-dev", torch_dtype=torch.bfloat16, device=device)
     print(f"Loading LoRA weights from: {lora_path}")
-    pipe.load_lora_weights(lora_path)
+    lora_dir = os.path.dirname(lora_path)
+    lora_filename = os.path.basename(lora_path)
+    pipe.load_lora_weights(lora_dir, weight_name=lora_filename)
 
     match = re.search(r"cuda:(\d+)", str(device))
     gpu_id = int(match.group(1)) if match else 0

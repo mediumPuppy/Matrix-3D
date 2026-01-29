@@ -3,22 +3,53 @@ import os
 from huggingface_hub import hf_hub_download, snapshot_download
 
 
-def download_ckpt(local_dir, repo_id, filename):
+def download_ckpt(local_dir, repo_id, filename, rename_map=None):
     os.makedirs(local_dir, exist_ok=True)
-    local_path = os.path.join(local_dir, os.path.basename(filename))
+    base_filename = os.path.basename(filename)
+    # Check if we need to rename the file
+    target_filename = rename_map.get(base_filename, base_filename) if rename_map else base_filename
+    local_path = os.path.join(local_dir, target_filename)
     if not os.path.exists(local_path):
         file_path = hf_hub_download(
             repo_id=repo_id,
             filename=filename,
             local_dir=local_dir,
         )
-        print(f"File has been downloaded to: {file_path}")
+        # Handle nested paths from hf_hub_download and rename if needed
+        downloaded_path = os.path.join(local_dir, filename)
+        if os.path.exists(downloaded_path) and downloaded_path != local_path:
+            import shutil
+            shutil.move(downloaded_path, local_path)
+            # Clean up empty nested directories
+            nested_dir = os.path.dirname(downloaded_path)
+            if nested_dir != local_dir and os.path.isdir(nested_dir) and len(os.listdir(nested_dir)) == 0:
+                os.rmdir(nested_dir)
+            print(f"File moved to: {local_path}")
+        else:
+            print(f"File has been downloaded to: {file_path}")
     else:
         print(f"File exists already: {local_path}")
+
 os.makedirs("./checkpoints", exist_ok=True)
+
+# Download Wan2.1 base model (required for video generation)
+wan_model_dir = "./checkpoints/Wan-AI/Wan2.1-I2V-14B-720P"
+if not os.path.exists(wan_model_dir) or len(os.listdir(wan_model_dir)) == 0:
+    print(f"\nDownloading Wan2.1-I2V-14B-720P base model (~28GB)...\n")
+    snapshot_download(
+        repo_id="Wan-AI/Wan2.1-I2V-14B-720P",
+        local_dir=wan_model_dir,
+    )
+    print(f"Wan2.1 model downloaded to: {wan_model_dir}")
+else:
+    print(f"Wan2.1 model exists already: {wan_model_dir}")
 repo_id_list = ["Ruicheng/moge-vitl","Iceclear/StableSR","Iceclear/StableSR","Skywork/Matrix-3D","Skywork/Matrix-3D","Skywork/Matrix-3D","Skywork/Matrix-3D","Skywork/Matrix-3D"]
 filename_list = ["model.pt","stablesr_turbo.ckpt","vqgan_cfw_00011.ckpt","checkpoints/text2panoimage_lora.safetensors","checkpoints/pano_lrm_480p.pt","checkpoints/pano_video_gen_480p.ckpt","checkpoints/pano_video_gen_720p.bin","checkpoints/pano_video_gen_720p_5b.safetensors"]
 local_dir_list = ["./checkpoints/moge","./checkpoints/StableSR","./checkpoints/StableSR","./checkpoints/flux_lora","./checkpoints/pano_lrm","./checkpoints/Wan-AI/wan_lora","./checkpoints/Wan-AI/wan_lora","./checkpoints/Wan-AI/wan_lora"]
+# Map downloaded filenames to expected filenames (code expects different names)
+rename_map = {
+    "text2panoimage_lora.safetensors": "pano_image_lora.safetensors"
+}
 
 N = len(repo_id_list)
 for i in range(N):
@@ -26,4 +57,4 @@ for i in range(N):
     filename = filename_list[i]
     local_dir = local_dir_list[i]
     print(f"\nDownloading {filename} from {repo_id} to local folder {local_dir}...\n")
-    download_ckpt(local_dir, repo_id, filename)
+    download_ckpt(local_dir, repo_id, filename, rename_map)

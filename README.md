@@ -529,6 +529,11 @@ We also provide a Gradio demo for better visualization. To launch the demo, run 
 python code/app_matrix3d.py --max_gpus=1
 ```
 
+For headless servers (RunPod, SSH, etc.), use xvfb for virtual display:
+```
+PYOPENGL_PLATFORM=egl PYGLET_HEADLESS=true xvfb-run -s "-screen 0 1400x900x24" python code/app_matrix3d.py --max_gpus=1
+```
+
 Notes on GPU Configuration:
 - Single GPU (--max_gpus=1): Currently only supports text-video-3D generation workflow. Ensure your GPU has at least 62 GB of memory to run this mode smoothly.
 - Multiple GPUs (--max_gpus=N, N≥2): Supports both Supports both text-video-3D and image-video-3D generation workflows. Allocate GPUs based on your hardware resources to optimize performance.

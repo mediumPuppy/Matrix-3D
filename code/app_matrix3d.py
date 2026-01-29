@@ -279,7 +279,9 @@ def init_t2p(device=torch.device("cuda")):
             ).to(device) 
             
             print(f"lora path={os.path.abspath(lora_path)}")
-            t2p_Pipeline.load_lora_weights(lora_path)
+            lora_dir = os.path.dirname(lora_path)
+            lora_filename = os.path.basename(lora_path)
+            t2p_Pipeline.load_lora_weights(lora_dir, weight_name=lora_filename)
             match = re.search(r"cuda:(\d+)", str(device))
             gpu_id = int(match.group(1)) if match else 0 
             t2p_Pipeline.enable_model_cpu_offload(gpu_id=gpu_id)

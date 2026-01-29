@@ -48,7 +48,9 @@ def main(args):
         ).to(device) 
         
         lora_path="./checkpoints/flux_lora/pano_image_lora.safetensors"
-        t2p_Pipeline.load_lora_weights(lora_path)
+        lora_dir = os.path.dirname(lora_path)
+        lora_filename = os.path.basename(lora_path)
+        t2p_Pipeline.load_lora_weights(lora_dir, weight_name=lora_filename)
         t2p_Pipeline.enable_model_cpu_offload()
         t2p_Pipeline.enable_vae_tiling()
         prompt = args.prompt

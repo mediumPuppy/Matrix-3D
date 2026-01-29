@@ -8,6 +8,16 @@ if ! command -v nvcc &> /dev/null; then
 fi
 echo "CUDA version: $(nvcc --version | grep release)"
 
+echo "[0/6] Installing system dependencies..."
+apt-get update && apt-get install -y \
+    freeglut3-dev \
+    libxrender1 \
+    libgl1-mesa-glx \
+    libglu1-mesa \
+    libegl1-mesa-dev \
+    libosmesa6-dev \
+    xvfb
+
 echo "[1/6] Installing Submodules..."
 cd ./submodules/nvdiffrast/
 pip install . --no-build-isolation
