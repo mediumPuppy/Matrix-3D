@@ -184,36 +184,78 @@
 ## 📦 Installation
 Currently tested on Linux system with NVIDIA GPU.
 
-Clone the repo and create the environment:
+### Prerequisites
 
 ```bash
-# install conda
+# Update system and install basic tools
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y wget git build-essential ninja-build
+
+# Install NVIDIA drivers (required for CUDA)
+sudo apt install -y ubuntu-drivers-common
+sudo ubuntu-drivers autoinstall
+sudo reboot  # Required after driver install
+
+# Verify driver installation (after reboot)
+nvidia-smi
+```
+
+### Install Miniconda
+
+```bash
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod +x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
 
-# download cuda stuff
+# Restart your shell or run:
+source ~/.bashrc
+
+# Verify installation
+conda --version
+```
+
+### Install CUDA 12.6
+
+```bash
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
 sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
 wget https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda-repo-ubuntu2204-12-6-local_12.6.0-550.54.15-1_amd64.deb
 sudo dpkg -i cuda-repo-ubuntu2204-12-6-local_12.6.0-550.54.15-1_amd64.deb
 sudo cp /var/cuda-repo-ubuntu2204-12-6-local/cuda-*-keyring.gpg /usr/share/keyrings/
 sudo apt-get update
-sudo apt-get install cuda-toolkit-12-6
+sudo apt-get install -y cuda-toolkit-12-6
 
-# Clone repo and create a new conda environment
+# Add CUDA to PATH (add to ~/.bashrc for persistence)
+echo 'export CUDA_HOME=/usr/local/cuda-12.6' >> ~/.bashrc
+echo 'export PATH=$CUDA_HOME/bin:$PATH' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+source ~/.bashrc
+
+# Verify CUDA installation
+nvcc --version
+```
+
+### Clone and Setup Environment
+
+```bash
 git clone --recursive https://github.com/mediumPuppy/Matrix-3D.git
 cd Matrix-3D
-conda create -n matrix3d python=3.10
+conda create -n matrix3d python=3.10 -y
 conda activate matrix3d
 
-# Install torch and torchvision (with GPU support, we use CUDA 12.4 Version)
-pip install torch==2.7.0 torchvision==0.22.0
+# Install PyTorch with CUDA 12.6 support
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126
 
-#Run installation script
+# Run installation script
 chmod +x install.sh
 ./install.sh
+```
 
+### Verify Installation
+
+```bash
+# Verify PyTorch CUDA support
+python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA available: {torch.cuda.is_available()}'); print(f'CUDA version: {torch.version.cuda}')"
 ```
 
 

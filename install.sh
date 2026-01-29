@@ -1,6 +1,14 @@
 #!/bin/bash
+set -e  # Exit on error
 
-echo "�� Installing Submodules..."
+# Verify CUDA is available
+if ! command -v nvcc &> /dev/null; then
+    echo "Error: nvcc not found. Please install CUDA toolkit first."
+    exit 1
+fi
+echo "CUDA version: $(nvcc --version | grep release)"
+
+echo "[1/6] Installing Submodules..."
 cd ./submodules/nvdiffrast/
 pip install . --no-build-isolation
 
@@ -8,22 +16,21 @@ cd ../simple-knn/
 python setup.py install
 cd ../../
 
-# Install diff-gaussian-rasterization
+echo "[2/6] Installing diff-gaussian-rasterization..."
 pip install git+https://github.com/rmurai0610/diff-gaussian-rasterization-w-pose.git --no-build-isolation
 
-# Install ODGS
-echo "�� Cloning and installing ODGS..."
+echo "[3/6] Cloning and installing ODGS..."
 git clone --recursive https://github.com/esw0116/ODGS.git
 cd ODGS
 pip install ./submodules/odgs-gaussian-rasterization --no-build-isolation
 cd ..
 
-echo "�� Installing DiffSynth-Studio..."
+echo "[4/6] Installing DiffSynth-Studio..."
 cd code/DiffSynth-Studio/     # Fixed path
 pip install -e .
 cd ../..
 
-echo "�� Installing Python dependencies..."
+echo "[5/6] Installing Python dependencies..."
 pip install plyfile decord ffmpeg trimesh pyrender xfuser diffusers open3d py360convert
 pip install "git+https://github.com/facebookresearch/pytorch3d.git@v0.7.7" --no-build-isolation
 pip install peft easydict torchsde open-clip-torch==2.7.0 fairscale natsort
@@ -52,4 +59,4 @@ pip install -e git+https://github.com/CompVis/taming-transformers.git@master#egg
 pip uninstall -y basicsr
 pip install openai-clip
 
-echo "✅ Installation script completed!"
+echo "[6/6] Installation complete!"
