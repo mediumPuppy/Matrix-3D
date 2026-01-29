@@ -32,12 +32,12 @@ cd ../..
 
 echo "[5/6] Installing Python dependencies..."
 pip install plyfile decord ffmpeg trimesh pyrender xfuser diffusers open3d py360convert
-pip install "git+https://github.com/facebookresearch/pytorch3d.git@v0.7.7" --no-build-isolation
+pip install "git+https://github.com/facebookresearch/pytorch3d.git@v0.7.8" --no-build-isolation
 pip install peft easydict torchsde open-clip-torch==2.7.0 fairscale natsort
 pip install realesrgan
 pip install flash-attn==2.7.4.post1 --no-build-isolation
 pip install git+https://github.com/EasternJournalist/utils3d.git#egg=utils3d --no-build-isolation
-pip install xformers==0.0.31 --no-build-isolation
+pip install xformers==0.0.27.post2 --no-build-isolation
 pip install jaxtyping==0.3.2
 pip install modelscope==1.28.2
 pip install diffusers==0.34.0
@@ -46,7 +46,7 @@ pip install transformers==4.56.0
 pip install torchmetrics==0.7.0
 pip install OmegaConf==2.1.1
 pip install imageio-ffmpeg==0.6.0
-pip install pytorch-lightning==1.4.2
+pip install pytorch-lightning==2.4.0
 pip install omegaconf==2.1.1
 pip install webdataset==0.2.5
 pip install kornia==0.6

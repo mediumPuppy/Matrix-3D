@@ -182,9 +182,32 @@
 **Related Project**: If you want to explore Real-Time Interactive Long-Sequence World Models, please visit [Matrix-Game 2.0](https://github.com/SkyworkAI/Matrix-Game/tree/main/Matrix-Game-2) for details.
 
 ## 📦 Installation
+
 Currently tested on Linux system with NVIDIA GPU.
 
-### Prerequisites
+### For RunPod Users (Recommended)
+
+Use the `runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04` template which has PyTorch, CUDA, and Python pre-installed.
+
+```bash
+# Clone repo
+git clone --recursive https://github.com/mediumPuppy/Matrix-3D.git
+cd Matrix-3D
+
+# Verify environment
+python -c "import torch; print(f'PyTorch: {torch.__version__}, CUDA: {torch.cuda.is_available()}')"
+
+# Run installation script
+chmod +x install.sh
+./install.sh
+```
+
+### For Fresh Ubuntu Installation
+
+<details>
+<summary>Click to expand full installation instructions</summary>
+
+#### Prerequisites
 
 ```bash
 # Update system and install basic tools
@@ -200,7 +223,7 @@ sudo reboot  # Required after driver install
 nvidia-smi
 ```
 
-### Install Miniconda
+#### Install Miniconda
 
 ```bash
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -214,19 +237,19 @@ source ~/.bashrc
 conda --version
 ```
 
-### Install CUDA 12.6
+#### Install CUDA 12.4
 
 ```bash
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
 sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
-wget https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda-repo-ubuntu2204-12-6-local_12.6.0-550.54.15-1_amd64.deb
-sudo dpkg -i cuda-repo-ubuntu2204-12-6-local_12.6.0-550.54.15-1_amd64.deb
-sudo cp /var/cuda-repo-ubuntu2204-12-6-local/cuda-*-keyring.gpg /usr/share/keyrings/
+wget https://developer.download.nvidia.com/compute/cuda/12.4.1/local_installers/cuda-repo-ubuntu2204-12-4-local_12.4.1-550.54.15-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu2204-12-4-local_12.4.1-550.54.15-1_amd64.deb
+sudo cp /var/cuda-repo-ubuntu2204-12-4-local/cuda-*-keyring.gpg /usr/share/keyrings/
 sudo apt-get update
-sudo apt-get install -y cuda-toolkit-12-6
+sudo apt-get install -y cuda-toolkit-12-4
 
 # Add CUDA to PATH (add to ~/.bashrc for persistence)
-echo 'export CUDA_HOME=/usr/local/cuda-12.6' >> ~/.bashrc
+echo 'export CUDA_HOME=/usr/local/cuda-12.4' >> ~/.bashrc
 echo 'export PATH=$CUDA_HOME/bin:$PATH' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
 source ~/.bashrc
@@ -235,21 +258,23 @@ source ~/.bashrc
 nvcc --version
 ```
 
-### Clone and Setup Environment
+#### Clone and Setup Environment
 
 ```bash
 git clone --recursive https://github.com/mediumPuppy/Matrix-3D.git
 cd Matrix-3D
-conda create -n matrix3d python=3.10 -y
+conda create -n matrix3d python=3.11 -y
 conda activate matrix3d
 
-# Install PyTorch with CUDA 12.6 support
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+# Install PyTorch 2.4.0 with CUDA 12.4 support
+pip install torch==2.4.0 torchvision --index-url https://download.pytorch.org/whl/cu124
 
 # Run installation script
 chmod +x install.sh
 ./install.sh
 ```
+
+</details>
 
 ### Verify Installation
 
