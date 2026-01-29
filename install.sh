@@ -35,13 +35,13 @@ cd ../..
 echo "[5/6] Installing Python dependencies..."
 # Fix for RunPod: blinker is pre-installed via distutils and blocks pip uninstall
 pip install --ignore-installed blinker
-pip install plyfile decord ffmpeg trimesh pyrender xfuser diffusers open3d py360convert
+pip install plyfile decord ffmpeg trimesh pyrender xfuser diffusers open3d py360convert gradio
 pip install "git+https://github.com/facebookresearch/pytorch3d.git@v0.7.9" --no-build-isolation
 pip install peft easydict torchsde open-clip-torch==2.7.0 fairscale natsort
 pip install realesrgan
 pip install flash-attn==2.7.4.post1 --no-build-isolation
 pip install git+https://github.com/EasternJournalist/utils3d.git#egg=utils3d --no-build-isolation
-pip install xformers==0.0.27.post2 --no-build-isolation
+pip install xformers==0.0.28 --no-build-isolation
 pip install jaxtyping==0.3.2
 pip install modelscope==1.28.2
 pip install diffusers==0.34.0
@@ -56,7 +56,7 @@ pip install webdataset==0.2.5
 pip install kornia==0.6
 pip install streamlit==1.12.1
 pip install einops==0.8.0
-pip install open_clip_torch
+# open_clip_torch already installed above as open-clip-torch==2.7.0
 pip install SwissArmyTransformer==0.4.12
 pip install wandb==0.21.1
 pip install -e git+https://github.com/CompVis/taming-transformers.git@master#egg=taming-transformers
