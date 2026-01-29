@@ -36,7 +36,7 @@ echo "[5/6] Installing Python dependencies..."
 # Fix for RunPod: blinker is pre-installed via distutils and blocks pip uninstall
 pip install --ignore-installed blinker
 pip install plyfile decord ffmpeg trimesh pyrender xfuser diffusers open3d py360convert
-pip install "git+https://github.com/facebookresearch/pytorch3d.git@v0.7.8" --no-build-isolation
+pip install "git+https://github.com/facebookresearch/pytorch3d.git@v0.7.9" --no-build-isolation
 pip install peft easydict torchsde open-clip-torch==2.7.0 fairscale natsort
 pip install realesrgan
 pip install flash-attn==2.7.4.post1 --no-build-isolation
